@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instapaper Queue</title>
+
+  <style>
+    button {
+      padding: 0 20px;
+      margin: 0 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Instapaper Queue</h1>
+  <button id="delay-btn">Delay</button>
+  <button id="read-btn">Read</button>
+  <button id="delete-btn">Delete</button>
+  <p id="response-output">Response Placeholder</p>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const delayBtn = document.getElementById('delay-btn')
+      const readBtn = document.getElementById('read-btn')
+      const deleteBtn = document.getElementById('delete-btn')
+      const responseText = document.getElementById('response-output')
+
+      let id = '';
+      const response = await fetch('/.netlify/functions/retrieve').then(response => response.json())
+      responseHandler(response, responseText)
+      id = response.id;
+
+      delayBtn.addEventListener('click', async () => {
+        const response = await fetch('/.netlify/functions/delay', {
+          method: 'POST',
+          body: JSON.stringify({ id })
+        }).then(response => response.json())
+        responseHandler(response, responseText)
+        id = response.id;
+      })
+
+      readBtn.addEventListener('click', async () => {
+        const response = await fetch('/.netlify/functions/read', {
+          method: 'POST',
+          body: JSON.stringify({ id })
+        }).then(response => response.json())
+        responseHandler(response, responseText)
+        id = response.id;
+      })
+
+      deleteBtn.addEventListener('click', async () => {
+        const response = await fetch('/.netlify/functions/delete', {
+          method: 'POST',
+          body: JSON.stringify({ id })
+        }).then(response => response.json())
+        responseHandler(response, responseText)
+        id = response.id;
+      })
+
+      function responseHandler(response, responseText) {
+        let html = `${response.title}<br><br><a target="_blank" href="${response.url}">${response.url}</a><br/><br/>${response.id}`
+        responseText.innerHTML = html;
+      }
+    })
+  </script>
+</body>
+
+</html>
