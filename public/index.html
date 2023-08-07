@@ -10,16 +10,24 @@
   <style>
     button {
       padding: 0 20px;
-      margin: 0 40px;
+    }
+    .container {
+      display: flex;
+      justify-content: space-between;
+      max-width: 400px;
     }
   </style>
 </head>
 
 <body>
   <h1>Instapaper Queue</h1>
-  <button id="delay-btn">Delay</button>
-  <button id="read-btn">Read</button>
-  <button id="delete-btn">Delete</button>
+  
+  <div class="container">
+    <button id="delay-btn">Delay</button>
+    <button id="read-btn">Read</button>
+    <button id="delete-btn">Delete</button>
+  </div>
+
   <p id="response-output">Response Placeholder</p>
 
   <script>
