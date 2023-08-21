@@ -19,7 +19,7 @@ pool.connect((err) => {
 const delay = async (id) => {
     try {
       const query = `update instapaper_queue set delayTill = CURRENT_DATE + INTERVAL '7 days' where id = ${id};
-      select * from instapaper_queue where read = false and (delayTill < current_date or delayTill is null) limit 1`;
+      select * from instapaper_queue where read = false and deleted = false (delayTill < current_date or delayTill is null) order by random() limit 1`;
       let result = await pool.query(query);
       //console.log(result);
       if(result.length == 2) {
