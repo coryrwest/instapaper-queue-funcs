@@ -19,7 +19,7 @@ pool.connect((err) => {
 const del = async (id) => {
     try {
       const query = `update instapaper_queue set deleted = true where id = ${id};
-      select * from instapaper_queue where read = false and deleted = false (delayTill < current_date or delayTill is null) order by random() limit 1`;
+      select * from instapaper_queue where read = false and deleted = false and (delayTill < current_date or delayTill is null) order by random() limit 1`;
       let result = await pool.query(query);
       //console.log(result);
       if(result.length == 2) {
