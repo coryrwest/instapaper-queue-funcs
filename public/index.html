@@ -11,6 +11,7 @@
     button {
       padding: 0 20px;
     }
+
     .container {
       display: flex;
       justify-content: space-between;
@@ -21,7 +22,7 @@
 
 <body>
   <h1>Instapaper Queue</h1>
-  
+
   <div class="container">
     <button id="delay-btn">Delay</button>
     <button id="read-btn">Read</button>
@@ -29,6 +30,13 @@
   </div>
 
   <p id="response-output">Response Placeholder</p>
+
+  <p>Category:</p>
+  <div class="container">
+    <button class="category-btn" id="management">Management</button>
+    <button class="category-btn" id="pesonal-growth">Personal Growth</button>
+    <button class="category-btn" id="parenting">Parenting</button>
+  </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
@@ -41,6 +49,21 @@
       const response = await fetch('/.netlify/functions/retrieve').then(response => response.json())
       responseHandler(response, responseText)
       id = response.id;
+
+      document.body.addEventListener('click', categoryClick, false);
+      async function categoryClick(e) {
+        e = e || window.event;
+        var target = e.target || e.srcElement;
+        if (target.className.match(/category-btn/)) {
+          const response = await fetch('/.netlify/functions/category', {
+            method: 'POST',
+            body: JSON.stringify({ id, category: target.id })
+          }).then(response => response.json())
+          responseHandler(response, responseText)
+          id = response.id;
+        }
+      }
+
 
       delayBtn.addEventListener('click', async () => {
         const response = await fetch('/.netlify/functions/delay', {
@@ -70,7 +93,7 @@
       })
 
       function responseHandler(response, responseText) {
-        let html = `${response.title}<br><br><a target="_blank" href="${response.url}">${response.url}</a><br/><br/>${response.id}`
+        let html = `${response.title}<br><br><a target="_blank" href="${response.url}">${response.url}</a><br/><br/>${response.id} - ${response.category}`
         responseText.innerHTML = html;
       }
     })

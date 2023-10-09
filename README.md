@@ -4,6 +4,10 @@ Learn how to use serverless functions in less than 30 minutes!
 
 📼: [Free Video Course](https://explorers.netlify.com/learn/up-and-running-with-serverless-functions/)
 
+## Run Locally
+Add Db connection settings to toml file
+`netlify dev`
+
 ## 📚 Resources
 
 | Lesson                                                                                                                                                                                                | Start Branch                                                                                              | End Branch                                                                                              |
